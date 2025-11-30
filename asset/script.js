@@ -8,12 +8,14 @@
 /** @type {Square[]} */
 const minecraft_player_model = [
   ...model.axis,
-  // ...model.heads,
-  // ...model.body,
-  // ...model.rightArmWide,
+  ...model.heads,
+  ...model.body,
+  ...model.rightArmWide,
   // ...model.leftArmWideX32,
+  ...model.leftArmWideX64,
   ...model.rightLeg,
-  ...model.leftLegX32,
+  // ...model.leftLegX32,
+  ...model.leftLegX64,
 ]
 
 async function main() {
@@ -103,12 +105,13 @@ function startAnimation(aspectRatio, gl, program, textures) {
   const matrixLocation = gl.getUniformLocation(program, "u_matrix");
 
   const camera = new Camera({
-    offset: [0, 0, -70],
+    offset: [0, 0, -100],
     rotation: [0, 0, 0]
   })
   camera.setPerspective(deg2Rad(45), aspectRatio, 0.1, 500);
-  camera.rotation[0] = deg2Rad(-45)
-  camera.rotation[1] = deg2Rad(135)
+  camera.rotation[0] = deg2Rad(45)
+  camera.rotation[1] = deg2Rad(-160)
+  camera.rotation[2] = deg2Rad(20)
 
   let rotation = 0
   function render() {
