@@ -10,60 +10,18 @@ const template_uv = {
       return [k, v]
     }),
   ),
-  rightLegs: getUVbySize([4, 12, 4], "skin", [0, 16]),
+  rightLeg: getUVbySize([4, 12, 4], "skin", [0, 16]),
+  leftLegX32: Object.fromEntries(
+    Object.entries(getUVbySize([4, 12, 4], "skin", [0, 16])).map(([k, v]) => {
+      const tmp = v.start[0]
+      v.start[0] = v.end[0]
+      v.end[0] = tmp
+      return [k, v]
+    }),
+  ),
 }
 
 const template_surface = {
-  rightArmWide: {
-    front: {
-      length: [4, 12],
-      base: {
-        center: [0, 4, 2],
-        angle: [0, 0, 0],
-        offset: [6, -2, 0],
-      },
-    },
-    right: {
-      length: [4, 12],
-      base: {
-        center: [0, 4, 2],
-        angle: [0, deg2Rad(-90), 0],
-        offset: [6, -2, 0],
-      },
-    },
-    back: {
-      length: [4, 12],
-      base: {
-        center: [0, 4, 2],
-        angle: [0, deg2Rad(-180), 0],
-        offset: [6, -2, 0],
-      },
-    },
-    left: {
-      length: [4, 12],
-      base: {
-        center: [0, 4, 2],
-        angle: [0, deg2Rad(-270), 0],
-        offset: [6.1, -2, 0],
-      },
-    },
-    top: {
-      length: [4, 4],
-      base: {
-        center: [0, 0, 2],
-        angle: [deg2Rad(90), 0, 0],
-        offset: [6, -2, 0],
-      },
-    },
-    bottom: {
-      length: [4, 4],
-      base: {
-        center: [0, 0, 10],
-        angle: [deg2Rad(-90), 0, 0],
-        offset: [6, -2, 0],
-      },
-    }
-  },
   leftArmWide: {
     front: {
       length: [4, 12],
@@ -110,6 +68,56 @@ const template_surface = {
         center: [0, 0, 10],
         angle: [deg2Rad(-90), 0, 0],
         offset: [-6, -2, 0],
+      },
+    }
+  },
+  leftLeg: {
+    front: {
+      length: [4, 12],
+      base: {
+        center: [0, 6, 2],
+        angle: [0, 0, 0],
+        offset: [-2, -12, 0],
+      },
+    },
+    right: {
+      length: [4, 12],
+      base: {
+        center: [0, 6, 2],
+        angle: [0, deg2Rad(-90), 0],
+        offset: [-2, -12, 0],
+      },
+    },
+    back: {
+      length: [4, 12],
+      base: {
+        center: [0, 6, 2],
+        angle: [0, deg2Rad(-180), 0],
+        offset: [-2, -12, 0],
+      },
+    },
+    left: {
+      length: [4, 12],
+      base: {
+        center: [0, 6, 2],
+        angle: [0, deg2Rad(-270), 0],
+        offset: [-2, -12, 0],
+      },
+    },
+    top: {
+      length: [4, 4],
+      base: {
+        center: [0, 0, 0],
+        angle: [deg2Rad(90), 0, 0],
+        offset: [-2, -12, 0],
+      },
+    },
+    bottom: {
+      length: [4, 4],
+      base: {
+        center: [0, 0, 12],
+        angle: [deg2Rad(-90), 0, 0],
+        offset: [-2, -12, 0],
       },
     }
   }
@@ -288,37 +296,67 @@ const model = {
     // MARK: > RightArm/Front
     new Square({
       tag: ["arm", "rightArm"],
-      ...template_surface.rightArmWide.front,
+      length: [4, 12],
+      base: {
+        center: [0, 4, 2],
+        angle: [0, 0, 0],
+        offset: [6, -2, 0],
+      },
       uv: template_uv.rightArmWide.front
     }),
     // MARK: > RightArm/Right
     new Square({
       tag: ["arm", "rightArm"],
-      ...template_surface.rightArmWide.right,
+      length: [4, 12],
+      base: {
+        center: [0, 4, 2],
+        angle: [0, deg2Rad(-90), 0],
+        offset: [6, -2, 0],
+      },
       uv: template_uv.rightArmWide.right
     }),
     // MARK: > RightArm/Back
     new Square({
       tag: ["arm", "rightArm"],
-      ...template_surface.rightArmWide.back,
+      length: [4, 12],
+      base: {
+        center: [0, 4, 2],
+        angle: [0, deg2Rad(-180), 0],
+        offset: [6, -2, 0],
+      },
       uv: template_uv.rightArmWide.back
     }),
     // MARK: > RightArm/Left
     new Square({
       tag: ["arm", "rightArm"],
-      ...template_surface.rightArmWide.left,
+      length: [4, 12],
+      base: {
+        center: [0, 4, 2],
+        angle: [0, deg2Rad(-270), 0],
+        offset: [6.1, -2, 0],
+      },
       uv: template_uv.rightArmWide.left
     }),
     // MARK: > RightArm/Top
     new Square({
       tag: ["arm", "rightArm"],
-      ...template_surface.rightArmWide.top,
+      length: [4, 4],
+      base: {
+        center: [0, 0, 2],
+        angle: [deg2Rad(90), 0, 0],
+        offset: [6, -2, 0],
+      },
       uv: template_uv.rightArmWide.top
     }),
     // MARK: > RightArm/Bottom
     new Square({
       tag: ["arm", "rightArm"],
-      ...template_surface.rightArmWide.bottom,
+      length: [4, 4],
+      base: {
+        center: [0, 0, 10],
+        angle: [deg2Rad(-90), 0, 0],
+        offset: [6, -2, 0],
+      },
       uv: template_uv.rightArmWide.bottom
     }),
   ],
@@ -339,7 +377,7 @@ const model = {
     new Square({
       tag: ["arm", "leftArm"],
       length: [4, 12],
-    ...template_surface.leftArmWide.back,
+      ...template_surface.leftArmWide.back,
       uv: template_uv.leftArmWideX32.back
     }),
     // MARK: > LeftArm/Left
@@ -361,188 +399,110 @@ const model = {
       uv: template_uv.leftArmWideX32.bottom
     }),
   ],
-  rightLegs: [
-    // MARK: > RightLegs/Front
+  rightLeg: [
+    // MARK: > RightLeg/Front
     new Square({
-      tag: ["legs", "rightLegs"],
+      tag: ["legs", "rightLeg"],
       length: [4, 12],
       base: {
         center: [0, 6, 2],
         angle: [0, 0, 0],
         offset: [2, -12, 0],
       },
-      uv: {
-        alias: "skin",
-        start: [8, 20],
-        end: [4, 32]
-      }
+      uv: template_uv.rightLeg.front
     }),
-    // MARK: > RightLegs/Right
+    // MARK: > RightLeg/Right
     new Square({
-      tag: ["legs", "rightLegs"],
+      tag: ["legs", "rightLeg"],
       length: [4, 12],
       base: {
         center: [0, 6, 2],
         angle: [0, deg2Rad(-90), 0],
         offset: [2, -12, 0],
       },
-      uv: {
-        alias: "skin",
-        start: [4, 20],
-        end: [0, 32]
-      }
+      uv: template_uv.rightLeg.right
     }),
-    // MARK: > RightLegs/Back
+    // MARK: > RightLeg/Back
     new Square({
-      tag: ["legs", "rightLegs"],
+      tag: ["legs", "rightLeg"],
       length: [4, 12],
       base: {
         center: [0, 6, 2],
         angle: [0, deg2Rad(-180), 0],
         offset: [2, -12, 0],
       },
-      uv: {
-        alias: "skin",
-        start: [16, 20],
-        end: [12, 32]
-      }
+      uv: template_uv.rightLeg.back
     }),
-    // MARK: > RightLegs/Left
+    // MARK: > RightLeg/Left
     new Square({
-      tag: ["legs", "rightLegs"],
+      tag: ["legs", "rightLeg"],
       length: [4, 12],
       base: {
         center: [0, 6, 2],
         angle: [0, deg2Rad(-270), 0],
         offset: [2, -12, 0],
       },
-      uv: {
-        alias: "skin",
-        start: [12, 20],
-        end: [8, 32]
-      }
+      uv: template_uv.rightLeg.left
     }),
-    // MARK: > RightLegs/Top
+    // MARK: > RightLeg/Top
     new Square({
-      tag: ["legs", "rightLegs"],
+      tag: ["legs", "rightLeg"],
       length: [4, 4],
       base: {
         center: [0, 0, 0],
         angle: [deg2Rad(90), 0, 0],
         offset: [2, -12, 0],
       },
-      uv: {
-        alias: "skin",
-        start: [8, 16],
-        end: [4, 20]
-      }
+      uv: template_uv.rightLeg.top
     }),
-    // MARK: > RightLegs/Bottom
+    // MARK: > RightLeg/Bottom
     new Square({
-      tag: ["legs", "rightLegs"],
+      tag: ["legs", "rightLeg"],
       length: [4, 4],
       base: {
         center: [0, 0, 12],
         angle: [deg2Rad(-90), 0, 0],
         offset: [2, -12, 0],
       },
-      uv: {
-        alias: "skin",
-        start: [12, 20],
-        end: [8, 16]
-      }
+      uv: template_uv.rightLeg.bottom
     }),
   ],
-  leftLegs: [
-    // MARK: > LeftLegs/Front
+  leftLegX32: [
+    // MARK: > LeftLeg/Front
     new Square({
-      tag: ["legs", "leftLegs"],
-      length: [4, 12],
-      base: {
-        center: [0, 6, 2],
-        angle: [0, 0, 0],
-        offset: [-2, -12, 0],
-      },
-      uv: {
-        alias: "skin",
-        start: [4, 20],
-        end: [8, 32]
-      }
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.front,
+      uv: template_uv.leftLegX32.front
     }),
-    // MARK: > LeftLegs/Left
+    // MARK: > LeftLeg/Right
     new Square({
-      tag: ["legs", "leftLegs"],
-      length: [4, 12],
-      base: {
-        center: [0, 6, 2],
-        angle: [0, deg2Rad(90), 0],
-        offset: [-2, -12, 0],
-      },
-      uv: {
-        alias: "skin",
-        start: [0, 20],
-        end: [4, 32]
-      }
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.right,
+      uv: template_uv.leftLegX32.left
     }),
-    // MARK: > LeftLegs/Back
+    // MARK: > LeftLeg/Back
     new Square({
-      tag: ["legs", "leftLegs"],
-      length: [4, 12],
-      base: {
-        center: [0, 6, 2],
-        angle: [0, deg2Rad(180), 0],
-        offset: [-2, -12, 0],
-      },
-      uv: {
-        alias: "skin",
-        start: [12, 20],
-        end: [16, 32]
-      }
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.back,
+      uv: template_uv.leftLegX32.back
     }),
-    // MARK: > LeftLegs/Left
+    // MARK: > LeftLeg/Left
     new Square({
-      tag: ["legs", "leftLegs"],
-      length: [4, 12],
-      base: {
-        center: [0, 6, 2],
-        angle: [0, deg2Rad(270), 0],
-        offset: [-2, -12, 0],
-      },
-      uv: {
-        alias: "skin",
-        start: [8, 20],
-        end: [12, 32]
-      }
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.left,
+      uv: template_uv.leftLegX32.right
     }),
-    // MARK: > LeftLegs/Top
+    // MARK: > LeftLeg/Top
     new Square({
-      tag: ["legs", "leftLegs"],
-      length: [4, 4],
-      base: {
-        center: [0, 0, 0],
-        angle: [deg2Rad(90), 0, 0],
-        offset: [-2, -12, 0],
-      },
-      uv: {
-        alias: "skin",
-        start: [4, 16],
-        end: [8, 20]
-      }
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.top,
+      uv: template_uv.leftLegX32.top
     }),
-    // MARK: > LeftLegs/Bottom
+    // MARK: > LeftLeg/Bottom
     new Square({
-      tag: ["legs", "leftLegs"],
-      length: [4, 4],
-      base: {
-        center: [0, 0, 12],
-        angle: [deg2Rad(-90), 0, 0],
-        offset: [-2, -12, 0],
-      },
-      uv: {
-        alias: "skin",
-        start: [8, 20],
-        end: [12, 16]
-      }
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.bottom,
+      uv: template_uv.leftLegX32.bottom
     }),
   ],
 }

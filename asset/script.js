@@ -10,10 +10,10 @@ const minecraft_player_model = [
   ...model.axis,
   // ...model.heads,
   // ...model.body,
-  ...model.rightArmWide,
-  // ...model.rightLegs,
-  ...model.leftArmWideX32,
-  // ...model.leftLegs,
+  // ...model.rightArmWide,
+  // ...model.leftArmWideX32,
+  ...model.rightLeg,
+  ...model.leftLegX32,
 ]
 
 async function main() {
@@ -103,11 +103,11 @@ function startAnimation(aspectRatio, gl, program, textures) {
   const matrixLocation = gl.getUniformLocation(program, "u_matrix");
 
   const camera = new Camera({
-    offset: [0, 0, -60],
+    offset: [0, 0, -70],
     rotation: [0, 0, 0]
   })
   camera.setPerspective(deg2Rad(45), aspectRatio, 0.1, 500);
-  camera.rotation[0] = deg2Rad(0)
+  camera.rotation[0] = deg2Rad(-45)
   camera.rotation[1] = deg2Rad(135)
 
   let rotation = 0
@@ -123,11 +123,20 @@ function startAnimation(aspectRatio, gl, program, textures) {
 
     // 各面を描画
     minecraft_player_model.forEach(square => {
-      if (square.tag?.includes("rightLegs")) {
+      if (square.tag?.includes("rightLeg")) {
         square.effect = {
           center: [0, 0, 0],
-          // angle: [deg2Rad(0), deg2Rad(-rotation * 0.5), 0],
-          angle: [deg2Rad(-rotation), deg2Rad(0), 0],
+          angle: [deg2Rad(0), deg2Rad(-rotation), 0],
+          // angle: [deg2Rad(-rotation), deg2Rad(0), 0],
+          // angle: [deg2Rad(90), deg2Rad(0), 0],
+          offset: [0, 0, 0],
+        }
+      }
+      if (square.tag?.includes("leftLeg")) {
+        square.effect = {
+          center: [0, 0, 0],
+          angle: [deg2Rad(0), deg2Rad(rotation), 0],
+          // angle: [deg2Rad(-rotation), deg2Rad(0), 0],
           // angle: [deg2Rad(90), deg2Rad(0), 0],
           offset: [0, 0, 0],
         }
