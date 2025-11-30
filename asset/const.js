@@ -35,7 +35,7 @@ const template_uv = {
       }),
     ),
     // 64x64
-    leftLegX64: {},
+    leftLegX64: getUVbySize([4, 12, 4], "skin", [16, 48]),
   },
   overlay: {
     // 64x32, 64x64
@@ -578,6 +578,44 @@ const model = {
       tag: ["legs", "leftLeg"],
       ...template_surface.leftLeg.bottom,
       uv: template_uv.base.leftLegX32.bottom
+    }),
+  ],
+  leftLegX64: [
+    // MARK: > LeftLeg/Front
+    new Square({
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.front,
+      uv: template_uv.base.leftLegX64.front
+    }),
+    // MARK: > LeftLeg/Right
+    new Square({
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.right,
+      uv: template_uv.base.leftLegX64.right
+    }),
+    // MARK: > LeftLeg/Back
+    new Square({
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.back,
+      uv: template_uv.base.leftLegX64.back
+    }),
+    // MARK: > LeftLeg/Left
+    new Square({
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.left,
+      uv: template_uv.base.leftLegX64.left
+    }),
+    // MARK: > LeftLeg/Top
+    new Square({
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.top,
+      uv: template_uv.base.leftLegX64.top
+    }),
+    // MARK: > LeftLeg/Bottom
+    new Square({
+      tag: ["legs", "leftLeg"],
+      ...template_surface.leftLeg.bottom,
+      uv: template_uv.base.leftLegX64.bottom
     }),
   ],
 }
