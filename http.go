@@ -19,7 +19,7 @@ func runHttpServer() {
 	mux.Handle("/ws/discord", websocket.Handler(handleDiscordSocket))
 	mux.Handle("/", fileServer)
 
-	hs = &http.Server{
+	httpServer = &http.Server{
 		Addr:         config.Listen,
 		Handler:      mux,
 		ReadTimeout:  5 * time.Second,
@@ -27,7 +27,7 @@ func runHttpServer() {
 		IdleTimeout:  60 * time.Second,
 	}
 
-	if err := hs.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+	if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("HTTP server failed: %v", err)
 	}
 	log.Println("runServer(): HTTP server stopped.")

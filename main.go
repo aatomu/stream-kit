@@ -14,6 +14,11 @@ import (
 	"fyne.io/systray"
 )
 
+const (
+	DiscordRpcMin = 6463
+	DiscordRpcMax = 6472
+)
+
 var (
 	//go:embed icon.ico
 	iconBytes []byte
@@ -22,7 +27,9 @@ var (
 	// Key watcher event multiplexer
 	multi multiplexer
 	// Http server
-	hs *http.Server
+	httpServer *http.Server
+	// Discord Websocket Port
+	discordPort = DiscordRpcMin
 
 	debug = flag.Bool("debug", false, "verbose log")
 )
@@ -48,10 +55,22 @@ func onReady() {
 	systray.SetIcon(iconBytes)
 	systray.SetTitle("Streamer Kit")
 	systray.SetTooltip(fmt.Sprintf("=== Stream Kit ===\nListening: %s", config.Listen))
+	// Systray menu
+	mExit := systray.AddMenuItem("Exit", "アプリケーションを終了します")
+	mChange := systray.AddMenuItem("Change Discord", "監視対象のdiscord Desktop Appを変更します")
+	go func() {
+		for {
+			select {
+			case <-mExit.ClickedCh:
+				systray.Quit()
 
+			case <-mChange.ClickedCh:
+			}
+		}
+	}()
 	// Boot key watcher
 	log.Println("systray.onReady().watcher")
-	multi = newWatcher()
+	go newWatcher()
 
 	// Boot http server
 	log.Println("systray.onReady().http")
@@ -62,13 +81,13 @@ func onExit() {
 	log.Println("onExit(): Initiating graceful shutdown.")
 
 	// グレースフルシャットダウンの実行
-	if hs != nil {
+	if httpServer != nil {
 		// 5秒の猶予期間を持つコンテキストを作成
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
 		// サーバーのシャットダウンを試みる
-		if err := hs.Shutdown(ctx); err != nil {
+		if err := httpServer.Shutdown(ctx); err != nil {
 			// シャットダウン中にエラー（タイムアウトを含む）
 			log.Printf("HTTP server Shutdown error: %v", err)
 		}
