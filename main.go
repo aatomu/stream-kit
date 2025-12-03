@@ -28,19 +28,33 @@ var (
 	multi multiplexer
 	// Http server
 	httpServer *http.Server
-	// Discord Websocket Port
-	discordPort = DiscordRpcMin
+	// Discord
+	discordPort    = DiscordRpcMin
+	enableActivity = false
+	changeClient   = make(chan struct{})
 
 	debug = flag.Bool("debug", false, "verbose log")
 )
 
 type Config struct {
-	Listen string `json:"listen"`
+	Listen   string          `json:"listen"`
+	Discord  *DiscordConfig  `json:"discord,omitempty"`
+	Activity *map[string]any `json:"activity,omitempty"`
+}
+
+type DiscordConfig struct {
+	Id     string `json:"client_id"`
+	Secret string `json:"client_secret"`
 }
 
 func init() {
 	c, _ := os.ReadFile("./config.json")
 	json.Unmarshal(c, &config)
+
+	if config.Discord != nil && config.Activity != nil {
+		enableActivity = true
+		go discordActivity()
+	}
 }
 
 func main() {
@@ -57,17 +71,32 @@ func onReady() {
 	systray.SetTooltip(fmt.Sprintf("=== Stream Kit ===\nListening: %s", config.Listen))
 	// Systray menu
 	mExit := systray.AddMenuItem("Exit", "アプリケーションを終了します")
-	mChange := systray.AddMenuItem("Change Discord", "監視対象のdiscord Desktop Appを変更します")
+	mChange := systray.AddMenuItem("Select Next Discord Client (now:0)", "監視対象のdiscord Desktop Appを変更します")
+	mChange.SetTitle(fmt.Sprintf("Select Next Discord Client (now:%d)", discordPort-DiscordRpcMin+1))
 	go func() {
 		for {
 			select {
 			case <-mExit.ClickedCh:
+				log.Println("Cliked menu: Exit")
 				systray.Quit()
 
 			case <-mChange.ClickedCh:
+				log.Println("Cliked menu: Select Next Discord Client")
+				discordPort++
+				if discordPort > DiscordRpcMax {
+					discordPort = DiscordRpcMin
+				}
+
+				if enableActivity {
+					go func() {
+						changeClient <- struct{}{}
+					}()
+				}
+				mChange.SetTitle(fmt.Sprintf("Select Next Discord Client (now:%d)", discordPort-DiscordRpcMin+1))
 			}
 		}
 	}()
+
 	// Boot key watcher
 	log.Println("systray.onReady().watcher")
 	go newWatcher()
