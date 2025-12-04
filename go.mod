@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	fyne.io/systray v1.11.0
+	github.com/Microsoft/go-winio v0.6.2
 	github.com/robotn/gohook v0.42.2
 	golang.org/x/net v0.47.0
 )
