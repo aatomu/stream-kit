@@ -86,6 +86,7 @@ function connectWebsocket() {
               animation_control.facing.rotation[1] = Math.min(animation_control.facing.rotation[1] - (diffY / 10), 40)
             }
             animation_control.facing.prevMousePos = animation_control.facing.nowMousePos
+            animation_control.facing.updateTimestamp = new Date().getTime()
           }
         }
       }

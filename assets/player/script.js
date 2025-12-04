@@ -34,6 +34,7 @@ let animation_control = {
     prevMousePos: [0, 0],
     nowMousePos: [0, 0],
     rotation: [0, 0],
+    updateTimestamp: 0
   }
 }
 
@@ -128,17 +129,19 @@ function startAnimation(aspectRatio, gl, program, textures) {
   function render() {
     rotation += 5;
     // あまたを自動で元に戻す
-    if (animation_control.facing.rotation[0] > 5) {
-      animation_control.facing.rotation[0] -= 0.5
-    }
-    if (animation_control.facing.rotation[0] < -5) {
-      animation_control.facing.rotation[0] += 0.5
-    }
-    if (animation_control.facing.rotation[1] > 5) {
-      animation_control.facing.rotation[1] -= 0.5
-    }
-    if (animation_control.facing.rotation[1] < -5) {
-      animation_control.facing.rotation[1] += 0.5
+    if (animation_control.facing.updateTimestamp + (1000 * 5) < new Date().getTime()) {
+      if (animation_control.facing.rotation[0] > 2) {
+        animation_control.facing.rotation[0] -= 0.5
+      }
+      if (animation_control.facing.rotation[0] < -2) {
+        animation_control.facing.rotation[0] += 0.5
+      }
+      if (animation_control.facing.rotation[1] > 2) {
+        animation_control.facing.rotation[1] -= 0.5
+      }
+      if (animation_control.facing.rotation[1] < -2) {
+        animation_control.facing.rotation[1] += 0.5
+      }
     }
     // 手足の動き
     // 1.動かすべき?
@@ -194,7 +197,7 @@ function startAnimation(aspectRatio, gl, program, textures) {
       if (square.tag?.includes("rightLeg")) {
         square.effect = {
           center: [0, 0, 0],
-          angle: [-rotate* 1.25, deg2Rad(0), 0],
+          angle: [-rotate * 1.25, deg2Rad(0), 0],
           offset: [0, 0, 0],
         }
       }
