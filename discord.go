@@ -5,7 +5,7 @@ type DiscordPayload struct {
 	Nonce string         `json:"nonce"` // In responses to commands (not subscribed events)
 	Evt   DiscordEvent   `json:"evt"`   // In subscribed events, errors, and (un)subscribing events
 	Data  map[string]any `json:"data"`  // In responses from the server
-	Args  map[string]any `json:"args`   // In commands sent to the server
+	Args  map[string]any `json:"args"`  // In commands sent to the server
 }
 
 type DiscordCmd string
