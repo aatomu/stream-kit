@@ -55,7 +55,6 @@
   aspect-ratio: 1/1;
 
   filter: brightness(75%);
-  border: var(--border-size) solid transparent;
   border-radius: 32px;
 }
 
@@ -65,7 +64,8 @@
   animation-duration: calc(1000ms - var(--duration-speed) * 10);
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
-  border: var(--border-size) solid var(--border-color);
+  outline: var(--border-size) solid var(--border-color);
+  outline-offset: calc(var(--border-size) * -1);
 }
 
 .users .user:has(.decoration) .icon {
