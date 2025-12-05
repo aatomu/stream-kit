@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"sync"
+	"time"
 
 	hook "github.com/robotn/gohook"
 )
@@ -29,6 +30,9 @@ func newWatcher() {
 
 	evCh := hook.Start()
 	defer hook.End()
+
+	const mouseMoveRateLimit = 15 * time.Millisecond // 15ms => 約60fps
+	var lastMouseMove time.Time
 
 	var buf [3]string
 	for ev := range evCh {
@@ -58,6 +62,12 @@ func newWatcher() {
 				buf[2] = "Right"
 			}
 		case hook.MouseMove:
+			now := time.Now()
+			if now.Sub(lastMouseMove) < mouseMoveRateLimit {
+				continue
+			}
+
+			lastMouseMove = now
 			buf = [3]string{"mouse", "move", fmt.Sprintf("[%d,%d]", ev.X, ev.Y)}
 		}
 		if *debug {
